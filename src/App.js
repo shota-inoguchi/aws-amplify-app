@@ -1,25 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import AWS from 'aws-sdk';
 import DeviceCard from './DeviceCard';
 
-function App() {
-  const devices = [
-    { name: 'デバイス 1', description: 'これはデバイス 1 です' },
-    { name: 'デバイス 2', description: 'これはデバイス 2 です' },
-    { name: 'デバイス 3', description: 'これはデバイス 3 です' },
-    // 他のデバイスを追加
-  ];
+function DeviceList() {
+  const [devices, setDevices] = useState([]);
+
+  useEffect(() => {
+    const dynamodb = new AWS.DynamoDB.DocumentClient();
+    const params = {
+      TableName: 'MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev',
+    };
+
+    dynamodb.scan(params, (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      setDevices(data.Items);
+    });
+  }, []);
+
+  const handleCardClick = (device) => {
+    // ここで該当デバイスの気圧値の過去24時間分のデータを取得して表示します
+  };
 
   return (
     <div>
-      <h1>デバイス一覧</h1>
-      <div>
-        {devices.map((device, index) => (
-          <DeviceCard key={index} device={device} />
-        ))}
-      </div>
+      {devices.map((device) => (
+        <DeviceCard key={device.deviceID} device={device} onClick={handleCardClick} />
+      ))}
+    </div>
+  );
+}
+export default DeviceList;
+
+import React from 'react';
+import { Line } from 'react-chartjs-2';
+
+function PressureGraph({ data }) {
+  const chartData = {
+    labels: data.map(item => item.timestamp),
+    datasets: [
+      {
+        label: '気圧値',
+        data: data.map(item => item.pressure),
+        // 他のグラフの設定もここに追加できます
+      },
+    ],
+  };
+
+  return (
+    <div>
+      <Line data={chartData} />
     </div>
   );
 }
 
-export default App;
+export default PressureGraph;
+
+
 
