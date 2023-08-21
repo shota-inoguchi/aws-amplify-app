@@ -1,29 +1,26 @@
 import React from 'react';
 import DeviceCard from './DeviceCard';
+import './App.css';
 
+const App = () => {
+  // 仮のデータ
+  const devices1 = [
+    { deviceID: '123', deviceName: 'Device 1', pressure: 1013, hat: 200 },
+    { deviceID: '456', deviceName: 'Device 2', pressure: 1005, hat: 150 },
+  ];
+    // 他のデバイスデータ
+    const devices2 = [
+      { deviceID: '123', deviceName: 'Device 1', pressure: 1013, hat: 200 },
+      { deviceID: '456', deviceName: 'Device 2', pressure: 1005, hat: 150 },
+  ];
 
-
-
-
-const AWS = require('aws-sdk');
-
-AWS.config.update({
-  region: 'ap-northeast-1' // あなたのリージョンを指定
-});
-
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
-
-const params = {
-  TableName: 'MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev', // あなたのテーブル名
-  // 他のクエリパラメータ（必要に応じて）
+  return (
+    <div className="App">
+      {devices.map((device, index) => (
+        <DeviceCard key={index} device={device} />
+      ))}
+    </div>
+  );
 };
-
-dynamoDB.scan(params, (err, data) => {
-  if (err) {
-    console.error('データの取得に失敗:', JSON.stringify(err, null, 2));
-  } else {
-    console.log('データの取得に成功:', JSON.stringify(data, null, 2));
-  }
-});
 
 export default App;
