@@ -1,63 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import AWS from 'aws-sdk';
-import DeviceCard from './DeviceCard';
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'your-region'});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-function DeviceList() {
-  const [devices, setDevices] = useState([]);
+const paramsDevices = {
+  TableName: "MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev",
+};
 
-  useEffect(() => {
-    const dynamodb = new AWS.DynamoDB.DocumentClient();
-    const params = {
-      TableName: 'MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev',
-    };
+const paramsLocations = {
+  TableName: "Metcom3DLocations-5m76m43vvjdg5pl23rdq2begum-dev",
+};
 
-    dynamodb.scan(params, (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+// デバイスデータの取得
+dynamodb.scan(paramsDevices, (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    // dataを使用してカードを表示
+  }
+});
 
-      setDevices(data.Items);
-    });
-  }, []);
-
-  const handleCardClick = (device) => {
-    // ここで該当デバイスの気圧値の過去24時間分のデータを取得して表示します
-  };
-
+// カードコンポーネントの例
+function DeviceCard({ device }) {
   return (
-    <div>
-      {devices.map((device) => (
-        <DeviceCard key={device.deviceID} device={device} onClick={handleCardClick} />
-      ))}
-    </div>
-  );
-}
-export default DeviceList;
-
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-
-function PressureGraph({ data }) {
-  const chartData = {
-    labels: data.map(item => item.timestamp),
-    datasets: [
-      {
-        label: '気圧値',
-        data: data.map(item => item.pressure),
-        // 他のグラフの設定もここに追加できます
-      },
-    ],
-  };
-
-  return (
-    <div>
-      <Line data={chartData} />
+    <div onClick={() => showGraph(device)}>
+      <h3>{device.deviceName}</h3>
+      <p>ID: {device.deviceId}</p>
+      <p>気圧値: {device.pressure}</p>
+      <p>地上高: {device.HAT}</p>
     </div>
   );
 }
 
-export default PressureGraph;
+function showGraph(device) {
+  // 過去24時間分のデータを取得
+  const params = {
+    TableName: "Metcom3DLocations-5m76m43vvjdg5pl23rdq2begum-dev",
+    KeyConditionExpression: "deviceId = :id",
+    ExpressionAttributeValues: {
+      ":id": device.deviceId,
+    },
+  };
 
-
-
+  dynamodb.query(params, (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      // dataを使用してグラフを表示
+    }
+  });
+}
