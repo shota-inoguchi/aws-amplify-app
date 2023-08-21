@@ -1,51 +1,65 @@
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'your-region'});
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-
-const paramsDevices = {
-  TableName: "MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev",
+const params = {
+  TableName: 'MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev'
 };
 
-const paramsLocations = {
-  TableName: "Metcom3DLocations-5m76m43vvjdg5pl23rdq2begum-dev",
-};
-
-// デバイスデータの取得
-dynamodb.scan(paramsDevices, (err, data) => {
+docClient.scan(params, function(err, data) {
   if (err) {
-    console.error(err);
+    console.error('Error', JSON.stringify(err, null, 2));
   } else {
-    // dataを使用してカードを表示
+    console.log('Success', data.Items);
   }
 });
 
-// カードコンポーネントの例
-function DeviceCard({ device }) {
+const params = {
+  TableName: 'Metcom3DLocations-5m76m43vvjdg5pl23rdq2begum-dev'
+};
+
+docClient.scan(params, function(err, data) {
+  if (err) {
+    console.error('Error', JSON.stringify(err, null, 2));
+  } else {
+    console.log('Success', data.Items);
+  }
+});
+
+import React, { useState, useEffect } from 'react';
+import AWS from 'aws-sdk';
+
+const DevicesList = () => {
+  const [devices, setDevices] = useState([]);
+
+  useEffect(() => {
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const params = {
+      TableName: 'MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev'
+    };
+
+    docClient.scan(params, function(err, data) {
+      if (err) {
+        console.error('Error', JSON.stringify(err, null, 2));
+      } else {
+        setDevices(data.Items);
+      }
+    });
+  }, []);
+
   return (
-    <div onClick={() => showGraph(device)}>
-      <h3>{device.deviceName}</h3>
-      <p>ID: {device.deviceId}</p>
-      <p>気圧値: {device.pressure}</p>
-      <p>地上高: {device.HAT}</p>
+    <div>
+      {devices.length > 0 ? (
+        devices.map((device, index) => (
+          <div key={index} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
+            <h3>{device.deviceName}</h3>
+            <p>Device ID: {device.deviceId}</p>
+            <p>気圧値: {device.pressureValue}</p>
+            <p>地上高（HAT）: {device.heightAboveTerrain}</p>
+          </div>
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
-}
+};
 
-function showGraph(device) {
-  // 過去24時間分のデータを取得
-  const params = {
-    TableName: "Metcom3DLocations-5m76m43vvjdg5pl23rdq2begum-dev",
-    KeyConditionExpression: "deviceId = :id",
-    ExpressionAttributeValues: {
-      ":id": device.deviceId,
-    },
-  };
+export default DevicesList;
 
-  dynamodb.query(params, (err, data) => {
-    if (err) {
-      console.error(err);
-    } else {
-      // dataを使用してグラフを表示
-    }
-  });
-}
