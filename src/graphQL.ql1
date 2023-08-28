@@ -1,0 +1,11 @@
+# schema.graphql
+type Device {
+  id: ID!
+  name: String!
+  type: String!
+  // 他のフィールドも追加できます
+}
+
+type Query {
+  getDevices: [Device]
+}
