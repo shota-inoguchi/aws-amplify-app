@@ -17,7 +17,7 @@ AWS.config.update({
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // データを取得する関数
-export const fetchItems = async () => {
+export const fetchItems1 = async () => {
   const params = {
     TableName: "MetcomDevices-5m76m43vvjdg5pl23rdq2begum-dev"
   };
@@ -39,7 +39,7 @@ function DeviceList() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchItems();
+      const data = await fetchItems1();
       setDevices(data);
     }
 
