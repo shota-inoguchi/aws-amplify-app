@@ -1,38 +1,23 @@
-import { useState } from 'react';
-import { Line } from 'react-chartjs-2'; // For line chart
-
-import styles from './DeviceCard.module.css';
+import React from 'react';
+import './DeviceCard.css'; // スタイルシートのインポート
 
 function DeviceCard({ device }) {
   return (
-    <div className={styles.card} onClick={() => setShowGraph(!showGraph)}>
-      ...
+    <div className="device-card">
+      <div className="device-id">
+        <strong>ID:</strong> {device.DeviceId}
+      </div>
+      <div className="device-name">
+        <strong>Name:</strong> {device.DeviceName}
+      </div>
+      <div className="device-pressure">
+        <strong>Pressure:</strong> {device.PressureValue}
+      </div>
+      <div className="device-altitude">
+        <strong>Altitude:</strong> {device.Altitude}
+      </div>
     </div>
   );
 }
 
-
-function DeviceCard({ device }) {
-  const [showGraph, setShowGraph] = useState(false);
-
-  return (
-    <div onClick={() => setShowGraph(!showGraph)}>
-      <h3>{device.name}</h3>
-      {showGraph && <PressureGraph data={device.pressureData} />}
-    </div>
-  );
-}
-
-function PressureGraph({ data }) {
-  const chartData = {
-    labels: data.map(d => d.timestamp),
-    datasets: [{
-      data: data.map(d => d.value),
-      label: 'Pressure over time',
-      borderColor: '#3333ff',
-      fill: false
-    }]
-  };
-
-  return <Line data={chartData} />;
-}
+export default DeviceCard;
