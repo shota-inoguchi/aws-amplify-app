@@ -1,8 +1,50 @@
+/* App全体のスタイリング */
+.App {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* カードのスタイリング */
 .device-card {
-    border: 1px solid #e1e1e1;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.device-card h3 {
+  margin-top: 0;
+}
+
+.device-card p {
+  margin: 10px 0;
+}
+
+/* リストのスタイリング */
+.device-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* レスポンシブデザインを考慮して、デバイスの幅に応じてカードのスタイルを調整 */
+@media (max-width: 600px) {
+  .device-card {
+    margin: 5px 0;
+    width: 100%;
   }
-  
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .device-card {
+    width: 48%;
+  }
+}
+
+@media (min-width: 901px) {
+  .device-card {
+    width: 32%;
+  }
+}

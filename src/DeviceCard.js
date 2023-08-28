@@ -1,34 +1,48 @@
-import { useQuery } from "@apollo/client";
-import gql from "graphql-tag";
+const devices = [
+  {
+    id: 1,
+    name: "Device A",
+    pressure: "1013 hPa",
+    altitude: "10 m"
+  },
+  {
+    id: 2,
+    name: "Device B",
+    pressure: "1010 hPa",
+    altitude: "20 m"
+  },
+  // ... 他のデバイスデータ
+];
 
-const GET_DEVICES = gql`
-  query GetDevices {
-    getDevices {
-      id
-      name
-      type
-      // 他のフィールドも追加できます
-    }
-  }
-`;
+import React from 'react';
 
-function DeviceCards() {
-  const { loading, error, data } = useQuery(GET_DEVICES);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
+const DeviceCard = ({ device }) => {
   return (
-    <div>
-      {data.getDevices.map(device => (
-        <div key={device.id} className="device-card">
-          <h2>{device.name}</h2>
-          <p>Type: {device.type}</p>
-          {/* 他のデータも表示できます */}
-        </div>
-      ))}
+    <div className="device-card">
+      <h3>{device.name}</h3>
+      <p><strong>ID:</strong> {device.id}</p>
+      <p><strong>Pressure:</strong> {device.pressure}</p>
+      <p><strong>Altitude:</strong> {device.altitude}</p>
     </div>
   );
 }
 
-export default DeviceCards;
+const DeviceList = ({ devices }) => {
+  return (
+    <div className="device-list">
+      {devices.map(device => <DeviceCard key={device.id} device={device} />)}
+    </div>
+  );
+}
+
+// 使用例
+function App() {
+  return (
+    <div className="App">
+      <h1>Devices</h1>
+      <DeviceList devices={devices} />
+    </div>
+  );
+}
+
+export default App;
