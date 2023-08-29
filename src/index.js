@@ -1,20 +1,16 @@
-const { ApolloServer, gql } = require('apollo-server');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import App from './App';
 
-// ダミーのスキーマとリゾルバー (後で実際のものに置き換える)
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello, world!"
-  }
-};
-
-const server = new ApolloServer({ typeDefs, resolvers });
-
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+const client = new ApolloClient({
+  uri: 'YOUR_GRAPHQL_API_ENDPOINT', // 例: 'https://api.example.com/graphql'
+  cache: new InMemoryCache(),
 });
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
