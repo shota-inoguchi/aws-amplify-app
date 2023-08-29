@@ -24,7 +24,7 @@ function DeviceList() {
     useEffect(() => {
         const client = new AWSAppSyncClient({
             url: 'https://jvgy2cnbljeopbngyjyv5zxzw4.appsync-api.ap-northeast-1.amazonaws.com/graphql',
-            region: 'ap-northeast1',
+            region: 'ap-northeast-1',
             
         });
 
