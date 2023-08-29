@@ -1,13 +1,50 @@
+
+
+const devices = [
+  {
+    id: 1,
+    name: "Device A",
+    pressure: "1013 hPa",
+    altitude: "10 m"
+  },
+  {
+    id: 2,
+    name: "Device B",
+    pressure: "1010 hPa",
+    altitude: "20 m"
+  },
+  // ... 他のデバイスデータ
+];
+
 import React from 'react';
 
-function DeviceCard({ device }) {
+const DeviceCard = ({ device }) => {
   return (
-    <div className="card">
-      <h2>{device.name}</h2>
-      <p>{device.description}</p>
-      {/* 他のデバイス情報をここに表示 */}
+    <div className="device-card">
+      <h3>{device.name}</h3>
+      <p><strong>ID:</strong> {device.id}</p>
+      <p><strong>Pressure:</strong> {device.pressure}</p>
+      <p><strong>Altitude:</strong> {device.altitude}</p>
     </div>
   );
 }
 
-export default DeviceCard;
+const DeviceList = ({ devices }) => {
+  return (
+    <div className="device-list">
+      {devices.map(device => <DeviceCard key={device.id} device={device} />)}
+    </div>
+  );
+}
+
+// 使用例
+function App() {
+  return (
+    <div className="App">
+      <h1>Devices</h1>
+      <DeviceList devices={devices} />
+    </div>
+  );
+}
+
+export default App;
