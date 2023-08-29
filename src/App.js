@@ -48,7 +48,8 @@ function DeviceList() {
         </div>
     );
 }
-const DeviceCard = ({ device }) => {
+
+const DeviceCard({ device }) {
     return (
         <div className="card mb-3" style={{ maxWidth: '20rem' }}>
             <div className="card-header">ID: {device.id}</div>
@@ -59,6 +60,6 @@ const DeviceCard = ({ device }) => {
             </div>
         </div>
     );
-};
+}
 
 export default DeviceList;
