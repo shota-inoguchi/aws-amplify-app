@@ -47,3 +47,37 @@ const devices = [
   
   export default App;
   
+  import React from 'react';
+  import { useQuery } from '@apollo/client';
+  import gql from 'graphql-tag';
+  
+  // 例としてのクエリ (実際のクエリに置き換えてください)
+  const GET_DATA = gql`
+    query {
+      "createmetcomdevicedefs5m76m43vvjdg5pl23rdq2begumdevinput": {
+        "DeviceID": "Hello, world!",
+        "Timestamp": 1,
+        "id": "Hello, world!"
+      }
+    }
+  `;
+  
+  function DataComponent() {
+    const { loading, error, data } = useQuery(GET_DATA);
+  
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+  
+    return (
+      <div>
+        {data.items.map(item => (
+          <div key={item.id}>
+            {item.name}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  
+  export default DataComponent;
+  
