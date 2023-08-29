@@ -32,7 +32,7 @@ function DeviceList() {
             setDevices(response.data.listDevices);
         });
     }, []);
-
+    
     
     useEffect(() => {
         client.query({ query: GET_DEVICES }).then(response => {
