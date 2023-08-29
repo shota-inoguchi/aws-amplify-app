@@ -1,4 +1,4 @@
-import React from 'react';
+
 import DeviceList from './DeviceList';  // 適切なパスに変更してください
 
 
