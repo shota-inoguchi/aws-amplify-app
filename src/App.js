@@ -17,6 +17,7 @@ const GET_DEVICES = graphql`
     }
 `;
 
+
 function DeviceList() {
     const [devices, setDevices] = useState([]);
 
