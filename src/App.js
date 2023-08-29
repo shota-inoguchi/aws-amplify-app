@@ -13,7 +13,13 @@ function App() {
             id: '2',
             name: 'Device 2',
             pressure: '1010 hPa',
-            altitude: '105 m'
+            altitude:'105 m' 
+        },
+        {
+            id: '3',
+            name: 'Device 3',
+            pressure: '1024 hPa',
+            altitude: '101 m'
         },
         // ... 他のデバイスデータ
     ];
